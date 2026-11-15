@@ -42,18 +42,19 @@ describe("Claude Code protocol", () => {
 		);
 	});
 
-	it("reproduces the recovered cc_version prompt fingerprint", async () => {
+	it("reproduces the cc_version prompt fingerprint for Claude Code 2.1.290", async () => {
+		expect(CLAUDE_CODE_VERSION).toBe("2.1.290");
 		expect(
 			await claudeCodeVersionFingerprint(
 				promptMessages("Reply with exactly: PROBE_OK"),
 			),
-		).toBe("022");
+		).toBe("343");
 		expect(
 			await buildClaudeCodeBillingHeader(
 				promptMessages("Reply with exactly: PROBE_OK"),
 			),
 		).toBe(
-			`x-anthropic-billing-header: cc_version=${CLAUDE_CODE_VERSION}.022; cc_entrypoint=sdk-cli; cch=00000;`,
+			`x-anthropic-billing-header: cc_version=${CLAUDE_CODE_VERSION}.343; cc_entrypoint=sdk-cli; cch=00000;`,
 		);
 	});
 
@@ -101,7 +102,7 @@ describe("Claude Code protocol", () => {
 		const system = payload.system as Array<Record<string, unknown>>;
 		expect(system[0]).toEqual({
 			type: "text",
-			text: `x-anthropic-billing-header: cc_version=${CLAUDE_CODE_VERSION}.022; cc_entrypoint=sdk-cli; cch=00000;`,
+			text: `x-anthropic-billing-header: cc_version=${CLAUDE_CODE_VERSION}.343; cc_entrypoint=sdk-cli; cch=00000;`,
 		});
 		expect(system[1]).toEqual({
 			type: "text",
